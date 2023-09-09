@@ -3,6 +3,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Ailien
 
 class AlienInvation:
     """ゲームのアセットと動作を管理する全体的なクラス"""
@@ -17,7 +18,9 @@ class AlienInvation:
         pygame.display.set_caption("エイリアン侵略")
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
-    
+        self.ailien = pygame.sprite.Group()
+        self._create_fleet()
+
     def run_game(self):
         """ゲームのメインループを開始する"""
         while True:
@@ -71,12 +74,20 @@ class AlienInvation:
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
 
+    def _create_fleet(self):
+        """エイリアンの船体を作成する"""
+        # 一匹のエイリアンを作成する
+        ailien = Ailien(self)
+        self.ailien.add(ailien)
+    
     def _update_screen(self):
         """画面上の画面を更新し、新しい画面に切り替える"""
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        self.ailien.draw(self.screen)
+        
         pygame.display.flip()
 
 if __name__ == '__main__':
